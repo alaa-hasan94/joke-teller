@@ -1,11 +1,21 @@
 const button = document.getElementById("button");
+const repeat = document.getElementById("repeat")
 let speech = new SpeechSynthesisUtterance();
-
+// Variable to store the last played joke
+let lastJoke = "";
+// function to replay the joke
+function replay () {
+  if (lastJoke) {
+    textToSpeech(lastJoke);
+  }
+}
+// Variable to store the last played joke
 function textToSpeech(joke) {
   speech.text = joke;
   // Generate speech and capture it into an audio source
   speechSynthesis.speak(speech);
-  console.log(joke)
+  lastJoke = joke;
+  console.log(joke);
 }
 // get the joke from the API
 async function getJoke() {
@@ -26,11 +36,18 @@ async function getJoke() {
   }
 }
 // Function to disable the button during voice playback
-function toggleButton () {
-  button.disabled = !button.disabled
+function disableButtons () {
+  button.disabled = true;
+    repeat.disabled = true;
 }
-speech.onstart = toggleButton; // Disable the button when speech playback starts
-speech.onend = toggleButton; // Enable the button when speech playback ends
-
+function enableButtons () {
+  button.disabled = false;
+  if (repeat.disabled && !lastJoke == "") {
+    repeat.disabled = false;
+  }
+}
+speech.onstart = disableButtons; // Disable the button when speech playback starts
+speech.onend = enableButtons; // Enable the button when speech playback ends
 // add event listener
 button.addEventListener("click", getJoke);
+repeat.addEventListener("click", replay);

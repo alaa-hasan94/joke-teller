@@ -42,6 +42,9 @@ button:disabled {
   cursor: default;
   filter: brightness(30%);
 }
+#repeat {
+  margin-top: 100px;
+}
 /* media qiery :tablet smaller */
 @media screen and (max-width: 1000px) {
   .container {
